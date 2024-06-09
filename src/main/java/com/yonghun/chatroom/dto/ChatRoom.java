@@ -1,6 +1,8 @@
 package com.yonghun.chatroom.dto;
 
+import com.yonghun.chatroom.service.ChatService;
 import lombok.Builder;
+import lombok.Getter;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashSet;
@@ -28,5 +30,17 @@ public class ChatRoom {
 
     public <T> void sendMessage(T message, ChatService chatService) {
         sessions.parallelStream().forEach(session -> chatService.sendMessage(session, message));
+    }
+
+    public String getRoomId() {
+        return roomId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Set<WebSocketSession> getSessions() {
+        return sessions;
     }
 }
