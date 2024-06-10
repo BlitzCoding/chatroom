@@ -1,12 +1,4 @@
 package com.yonghun.chatroom.dto;
-
-import com.yonghun.chatroom.service.ChatService;
-import lombok.Builder;
-import lombok.Getter;
-import org.springframework.web.socket.WebSocketSession;
-
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public class ChatRoom {

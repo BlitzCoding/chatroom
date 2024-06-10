@@ -1,26 +1,27 @@
 package com.yonghun.chatroom.controller;
 
-import com.yonghun.chatroom.dto.ChatRoom;
-import com.yonghun.chatroom.service.ChatService;
-import lombok.Getter;
+import com.yonghun.chatroom.dto.ChatMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 public class ChatController {
 
-    private final ChatService chatService;
+    private final SimpMessageSendingOperations messagingTemplate;
 
-    @PostMapping("/chat")
-    public ChatRoom createRoom(@RequestParam(value="name") String name) {
-        return chatService.createRoom(name);
-    }
-
-    @GetMapping("/chat")
-    public List<ChatRoom> findAllRoom() {
-        return chatService.findAllRoom();
+    @MessageMapping("/chat/message")
+    public void message(ChatMessage message)
+    {
+        if (ChatMessage.MessageType.ENTER.equals(message.getType()))
+        {
+            message.setMessage(message.getSender() + "님이 입장했습니다");
+        }
+        messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
     }
 }

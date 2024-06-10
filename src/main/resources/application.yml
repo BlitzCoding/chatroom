@@ -6,3 +6,6 @@ spring:
       enabled: false
   freemarker:
     cache: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .ftl
